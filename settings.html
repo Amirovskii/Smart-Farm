@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Smart Farm - Settings</title>
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+<body id="page-top">
+    <div id="wrapper">
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content" class="container-fluid mt-4">
+                <h1 class="h3 mb-4 text-gray-800">System Settings</h1>
+                <div class="card shadow mb-4 col-lg-6">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Dashboard Preferences</h6>
+                    </div>
+                    <div class="card-body">
+                        <div id="settingsMessage"></div>
+                        <form id="settingsForm">
+                            <div class="form-group">
+                                <label>Temperature Unit</label>
+                                <select class="form-control" id="unitInput">
+                                    <option value="C">Celsius (°C)</option>
+                                    <option value="F">Fahrenheit (°F)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Water Alert Threshold (%)</label>
+                                <input type="number" class="form-control" id="waterThreshold" placeholder="20">
+                                <small>Cards turn red if water level falls below this.</small>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Settings</button>
+                            <a href="index.html" class="btn btn-secondary">Back to Dashboard</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load saved settings on startup
+        document.addEventListener("DOMContentLoaded", () => {
+            const saved = JSON.parse(localStorage.getItem("farmSettings")) || { unit: 'C', water: 20 };
+            document.getElementById("unitInput").value = saved.unit;
+            document.getElementById("waterThreshold").value = saved.water;
+        });
+
+        // Save settings
+        document.getElementById("settingsForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const farmSettings = {
+                unit: document.getElementById("unitInput").value,
+                water: document.getElementById("waterThreshold").value
+            };
+            localStorage.setItem("farmSettings", JSON.stringify(farmSettings));
+            showMessage("success", "Settings saved! Your dashboard will now update.");
+            window.location.href = "index.html";
+        });
+
+        // Function to show messages
+        function showMessage(type, message) {
+            const messageDiv = document.getElementById("settingsMessage");
+            messageDiv.className = `alert alert-${type}`;
+            messageDiv.textContent = message;
+            messageDiv.classList.remove("d-none");
+        }
+
+    </script>
+</body>
+</html>

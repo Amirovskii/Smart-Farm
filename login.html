@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Smart Farm - Login</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-gradient-primary">
+
+    <div class="container">
+
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-10 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                    </div>
+                                    <form class="user" id="loginForm">
+                                        <div class="form-group">
+                                            <input type="email" class="form-control form-control-user"
+                                                id="exampleInputEmail" aria-describedby="emailHelp"
+                                                placeholder="Enter Email Address...">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control-user"
+                                                id="exampleInputPassword" placeholder="Password">
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox small">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck">
+                                                <label class="custom-control-label" for="customCheck">Remember
+                                                    Me</label>
+                                            </div>
+                                        </div>
+                                        <div id="loginMessage" class="alert d-none" role="alert"></div>
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">
+    Login
+</button>
+                                        </a>
+                                        <hr>
+                                        <button type="button"
+  class="btn btn-google btn-user btn-block"
+  onclick="socialLoginDisabled()">
+  <i class="fab fa-google fa-fw"></i> Login with Google
+</button>
+
+<button type="button"
+  class="btn btn-facebook btn-user btn-block"
+  onclick="socialLoginDisabled()">
+  <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
+</button>
+                                    </form>
+                                    <hr>
+                                    <div class="text-center">
+                                        <a class="small" href="forgot-password.html">Forgot Password?</a>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="small" href="register.html">Create an Account!</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+   <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("loginForm");
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const email = document.getElementById("exampleInputEmail").value.trim();
+        const password = document.getElementById("exampleInputPassword").value.trim();
+
+        if (!email || !password) {
+            showMessage("Email and password are required", "danger");
+            return;
+        }
+
+        // 1. Get the list of users from the Register page
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        
+        // 2. Find if the user exists and the password matches
+        const user = users.find(u => u.email === email && u.password === password);
+
+if (user) {
+    // SUCCESS!
+    localStorage.setItem("loggedIn", "true");
+    
+    // IMPORTANT: This line allows the Profile page to know WHO you are
+    localStorage.setItem("currentUserEmail", email);
+    
+    // Save activity log
+    let logs = JSON.parse(localStorage.getItem("activityLog")) || [];
+    const newLog = {
+        user: email, 
+        action: "Login",
+        timestamp: new Date().toLocaleString(),
+        status: "Success",
+        icon: "fa-sign-in-alt",
+        color: "text-success"
+    };
+    logs.unshift(newLog);
+    localStorage.setItem("activityLog", JSON.stringify(logs));
+
+    showMessage("Login successful. Redirecting...", "success");
+
+    setTimeout(() => {
+        window.location.href = "index.html";
+    }, 800);
+} else {
+    // FAILURE
+    showMessage("Invalid email or password", "danger");
+}
+    });
+});
+
+function showMessage(message, type) {
+    const messageDiv = document.getElementById("loginMessage");
+    messageDiv.textContent = message;
+    messageDiv.className = `alert alert-${type}`;
+    messageDiv.classList.remove("d-none");
+}
+
+function socialLoginDisabled() {
+    showMessage("Social login is currently disabled in this demo.", "info");
+}
+</script>
+
+</html>
