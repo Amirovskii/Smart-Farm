@@ -36,7 +36,7 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                             </div>
-                            <div id="registerMessage"></div>
+                            <div id="registerMessage" class="alert d-none"></div>
                             <form class="user" id="registerForm">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
@@ -147,18 +147,15 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-function showMessage(type, text) {
-  const box = document.getElementById("messageBox");
+function showMessage(text, type = "danger") {
+  const msg = document.getElementById("registerMessage");
+  if (!msg) return;
 
-  box.innerHTML = `
-    <div class="alert alert-${type} alert-dismissible fade show" role="alert">
-      ${text}
-      <button type="button" class="close" data-dismiss="alert">
-        <span>&times;</span>
-      </button>
-    </div>
-  `;
+  msg.className = `alert alert-${type}`;
+  msg.textContent = text;
+  msg.classList.remove("d-none");
 }
+
 
 </script>
 
