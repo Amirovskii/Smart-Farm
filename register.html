@@ -36,7 +36,7 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                             </div>
-                            <div id="registerMessage" class="alert d-none"></div>
+                            <div id="registerMessage"></div>
                             <form class="user" id="registerForm">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
@@ -115,12 +115,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 2. Updated Validation
     if (!firstName || !lastName || !email || !password || !repeat) {
-      showMessage("All fields are required", "danger");
+      showMessage("danger", "All fields are required");
       return;
     }
 
     if (password !== repeat) {
-      showMessage("Passwords do not match", "danger");
+      showMessage("danger", "Passwords do not match");
       return;
     }
 
@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const exists = users.find(u => u.email === email);
     if (exists) {
-      showMessage("User with this email already exists", "danger");
+      showMessage("danger", "User already exists");
       return;
     }
 
@@ -142,21 +142,28 @@ document.addEventListener("DOMContentLoaded", function () {
     
     localStorage.setItem("users", JSON.stringify(users));
 
-    showMessage("Registration successful! Redirecting to login...", "success");
+    showMessage("success", "Registration successful. Please log in.");
     setTimeout(() => {
     window.location.href = "login.html";
-  },1200);
+  },2000);
+  });
 });
 
-function showMessage(text, type = "danger") {
-  const msg = document.getElementById("registerMessage");
-  if (!msg) return;
+function showMessage(type, text) {
+  // CHANGED: "messageBox" to "registerMessage" to match your HTML
+  const box = document.getElementById("registerMessage");
 
-  msg.className = `alert alert-${type}`;
-  msg.textContent = text;
-  msg.classList.remove("d-none");
+  if (box) {
+    box.innerHTML = `
+      <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+        ${text}
+        <button type="button" class="close" data-dismiss="alert">
+          <span>&times;</span>
+        </button>
+      </div>
+    `;
+  }
 }
-
 
 </script>
 
