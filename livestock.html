@@ -3,28 +3,25 @@
 
 <head>
 
-    <script>
-if (localStorage.getItem("loggedIn") !== "true") {
-  window.location.href = "login.html";
-}
-</script>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Smart Farm - System Logs & Alerts</title>
+    <title>Smart Farm - Livestock</title>
 
-    <!-- Custom fonts for this template-->
+    <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
-    <!-- Custom styles for this template-->
+    <!-- Custom styles for this template -->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -41,7 +38,7 @@ if (localStorage.getItem("loggedIn") !== "true") {
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-seedling"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Smart Farm <sup></sup></div>
+                <div class="sidebar-brand-text mx-3">Smart Farm </div>
             </a>
 
             <!-- Divider -->
@@ -63,18 +60,17 @@ if (localStorage.getItem("loggedIn") !== "true") {
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item active">
-                <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-                    aria-controls="collapseTwo">
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Components</span>
                 </a>
-                <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo"
-                    data-parent="#accordionSidebar">
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Controls & Alerts</h6>
+                        <h6 class="collapse-header">Custom Components:</h6>
                         <a class="collapse-item" href="buttons.html">Farm Controls</a>
-                        <a class="collapse-item active" href="cards.html">System Logs & Alerts</a>
+                        <a class="collapse-item" href="cards.html">System Logs & Alerts</a>
                     </div>
                 </div>
             </li>
@@ -91,9 +87,7 @@ if (localStorage.getItem("loggedIn") !== "true") {
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Monitoring:</h6>
                         
-                        <a class="collapse-item" href="utilities-other.html">Camera Monitoring
-                        
-                        </a>
+                        <a class="collapse-item" href="utilities-other.html">Camera Monitoring</a>
                     </div>
                 </div>
             </li>
@@ -120,7 +114,7 @@ if (localStorage.getItem("loggedIn") !== "true") {
                         <a class="collapse-item" href="register.html">Register</a>
                         <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
                         <div class="collapse-divider"></div>
-                        
+                      
                     </div>
                 </div>
             </li>
@@ -133,7 +127,7 @@ if (localStorage.getItem("loggedIn") !== "true") {
             </li>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="livestock.html">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Livestock</span></a>
@@ -160,9 +154,11 @@ if (localStorage.getItem("loggedIn") !== "true") {
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                     <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
+                    <form class="form-inline">
+                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                    </form>
 
                     <!-- Topbar Search -->
                     <form
@@ -205,9 +201,8 @@ if (localStorage.getItem("loggedIn") !== "true") {
                             </div>
                         </li>
 
-                       
-
-                       <li class="nav-item dropdown no-arrow mx-1">
+                        
+                            <li class="nav-item dropdown no-arrow mx-1">
     <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-tasks fa-fw"></i>
@@ -243,10 +238,10 @@ if (localStorage.getItem("loggedIn") !== "true") {
         <a class="dropdown-item text-center small text-gray-500" href="#">View Full Schedule</a>
     </div>
 </li>
+
                         <div class="topbar-divider d-none d-sm-block"></div>
 
-                          <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
+                       <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Amir Khattab</span>
@@ -283,39 +278,49 @@ if (localStorage.getItem("loggedIn") !== "true") {
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <div class="row justify-content-center">
-  <div class="col-lg-10">
-
-    <div class="card shadow mb-4">
-      <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Recent System Activity</h6>
-      </div>
-
-      <div class="card-body" style="max-height: 400px; overflow-y: auto;">
-        <ul id="systemLogs" class="list-group">
-        
-        </ul>
-      </div>
+                   <div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Livestock Overview</h6>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Animal</th>
+            <th>Count</th>
+            <th>Health Status</th>
+            <th>Last Check</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🐄 Cows</td>
+            <td>20</td>
+            <td><span class="badge badge-success">Healthy</span></td>
+            <td>Today</td>
+            <td>Milk production normal</td>
+          </tr>
+          <tr>
+            <td>🐑 Sheep</td>
+            <td>25</td>
+            <td><span class="badge badge-warning">Needs Attention</span></td>
+            <td>Yesterday</td>
+            <td>Vaccination due</td>
+          </tr>
+          <tr>
+            <td>🐔 Chickens</td>
+            <td>55</td>
+            <td><span class="badge badge-success">Healthy</span></td>
+            <td>Today</td>
+            <td>Egg production stable</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-
   </div>
 </div>
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
-
-        </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
@@ -352,72 +357,14 @@ if (localStorage.getItem("loggedIn") !== "true") {
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 
-    <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const logList = document.getElementById("systemLogs");
-  let logs = JSON.parse(localStorage.getItem("farmLogs")) || [];
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
-  if (logs.length === 0) {
-    const li = document.createElement("li");
-    li.className = "list-group-item text-muted";
-    li.innerText = "No system activity yet";
-    logList.appendChild(li);
-    return;
-  }
-
-  logs.forEach(log => {
-    const li = document.createElement("li");
-    li.className = "list-group-item";
-    li.innerText = log;
-    logList.appendChild(li);
-  });
-});
-</script>
-
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const currentUserEmail = localStorage.getItem("currentUserEmail");
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const user = users.find(u => u.email === currentUserEmail);
-
-    if (user) {
-        // Look for the span that holds the name in the topbar
-        const nameDisplay = document.querySelector("#userDropdown .text-gray-600");
-        if (nameDisplay) {
-            nameDisplay.innerText = user.firstName + " " + user.lastName;
-        }
-    } else {
-        // If no one is logged in, send them back to login
-        window.location.href = "login.html";
-    }
-});
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    // 1. Get settings from LocalStorage
-    const settings = JSON.parse(localStorage.getItem("farmSettings")) || { unit: 'C', water: 20 };
-
-    // 2. Update Temperature Display based on Unit Setting
-    const tempValueElement = document.querySelector(".text-primary + .h5"); // Finds the 14°C div
-    let currentTemp = 14; // This would normally come from a sensor
-    
-    if (settings.unit === "F") {
-        let fahrenheit = (currentTemp * 9/5) + 32;
-        tempValueElement.innerText = fahrenheit.toFixed(1) + "°F";
-    }
-
-    // 3. Update Water Level Alert color
-    const waterLevel = 75; // The 75% from your HTML
-    const waterCard = document.querySelector(".border-left-success");
-    
-    if (waterLevel < settings.water) {
-        waterCard.classList.replace("border-left-success", "border-left-danger");
-        waterCard.querySelector(".text-success").classList.replace("text-success", "text-danger");
-    }
-});
-
-function handleLogout() {
+    function handleLogout() {
     let logs = JSON.parse(localStorage.getItem("activityLog")) || [];
     
     // 1. Get the actual user from storage, default to 'Unknown' if not found
@@ -440,9 +387,7 @@ function handleLogout() {
     localStorage.setItem("loggedIn", "false");
     window.location.href = "login.html";
 }
-
 </script>
-
 </body>
 
 </html>
