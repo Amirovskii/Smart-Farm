@@ -115,12 +115,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 2. Updated Validation
     if (!firstName || !lastName || !email || !password || !repeat) {
-      showMessage("danger", "All fields are required");
+      showMessage("All fields are required", "danger");
       return;
     }
 
     if (password !== repeat) {
-      showMessage("danger", "Passwords do not match");
+      showMessage("Passwords do not match", "danger");
       return;
     }
 
@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const exists = users.find(u => u.email === email);
     if (exists) {
-      showMessage("danger", "User already exists");
+      showMessage("User with this email already exists", "danger");
       return;
     }
 
@@ -142,9 +142,10 @@ document.addEventListener("DOMContentLoaded", function () {
     
     localStorage.setItem("users", JSON.stringify(users));
 
-    showMessage("success", "Registration successful. Please log in.");
+    showMessage("Registration successful! Redirecting to login...", "success");
+    setTimeout(() => {
     window.location.href = "login.html";
-  });
+  },1200);
 });
 
 function showMessage(text, type = "danger") {
