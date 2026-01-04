@@ -162,19 +162,7 @@ if (localStorage.getItem("loggedIn") !== "true") {
                         <i class="fa fa-bars"></i>
                     </button>
 
-                    <!-- Topbar Search -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                   
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -496,6 +484,7 @@ function startIrrigation() {
   document.getElementById("irrigationStatus").innerText = "ON";
   document.getElementById("systemAlert").innerText = "Irrigation Started (Manual)";
   saveState();
+  addLog("Irrigation started (Manual)");
 }
 
 function stopIrrigation() {
@@ -503,6 +492,7 @@ function stopIrrigation() {
   document.getElementById("irrigationStatus").innerText = "OFF";
   document.getElementById("systemAlert").innerText = "Irrigation Stopped (Manual)";
   saveState();
+  addLog("Irrigation stopped (Manual)");
 }
 
 function toggleFan() {

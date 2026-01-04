@@ -58,7 +58,7 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Components</span>
@@ -154,19 +154,7 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-                    <!-- Topbar Search -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -276,210 +264,54 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Farm Analytics</h1>
-<p class="mb-4">
-  Historical analysis of smart farm behavior and sensor trends.
-</p>
+                   <div class="row">
 
-                    <!-- Content Row -->
-                    <div class="row">
-
-                        <div class="col-xl-8 col-lg-7">
-
-                           
-
-                            <!-- Bar Chart -->
-                            <div class="card shadow mb-4">
-  <div class="card-header py-3">
-    <h6 class="m-0 font-weight-bold text-success">
-      Irrigation Usage (ON vs OFF)
-    </h6>
-  </div>
-  <div class="card-body">
-    <div class="chart-container" style="position: relative; height:300px; width:100%">
-        <canvas id="irrigationChart"></canvas>
-    </div>
-</div>
-      This chart shows how frequently irrigation was activated or stopped.
-    </p>
-  </div>
-</div>
-
-                        <!-- Donut Chart -->
-                        <div class="card shadow mb-4">
-  <div class="card-header py-3">
-    <h6 class="m-0 font-weight-bold text-primary">
-      Auto vs Manual Mode Usage
-    </h6>
-  </div>
-  <div class="card-body">
-    <canvas id="modeChart"></canvas>
-    <p class="mt-3 text-muted">
-      This chart shows how often the system operated in Auto mode versus Manual mode.
-    </p>
-  </div>
-</div>
-                <!-- /.container-fluid -->
-
+ <div class="row">
+    <div class="col-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Farm Climate Trend: Monthly Rainfall & Irrigation</h6>
             </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
-                    </div>
+            <div class="card-body">
+                <div class="chart-area" style="height: 450px;">
+                    <canvas id="farmRainfallChart"></canvas>
                 </div>
-            </footer>
-            <!-- End of Footer -->
-
+            </div>
         </div>
-        <!-- End of Content Wrapper -->
-
     </div>
-    <!-- End of Page Wrapper -->
+</div>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+<div class="row">
+    <div class="col-xl-7 col-lg-7">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Annual Crop Yield (Tons)</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-bar" style="height: 400px;">
+                    <canvas id="myFarmBarChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
-    <script src="js/demo/chart-bar-demo.js"></script>
-
-<!-- Chart.js -->
-
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  if (typeof Chart === "undefined") {
-    console.error("Chart.js not loaded");
-    return;
-  }
-
-  // ===== LOAD LOGS =====
-  let logsRaw = localStorage.getItem("farmLogs");
-  let logs = [];
-
-  try {
-    logs = logsRaw ? JSON.parse(logsRaw) : [];
-  } catch {
-    logs = [];
-  }
-
-  // ===== AUTO vs MANUAL PIE =====
-  let autoCount = 0;
-  let manualCount = 0;
-
-  logs.forEach(log => {
-    if (typeof log !== "string") return;
-    if (log.includes("Auto")) autoCount++;
-    if (log.includes("Manual")) manualCount++;
-  });
-
-  if (autoCount === 0 && manualCount === 0) {
-    autoCount = 1;
-    manualCount = 1;
-  }
-
-  const modeCanvas = document.getElementById("modeChart");
-  if (modeCanvas) {
-    new Chart(modeCanvas, {
-      type: "pie",
-      data: {
-        labels: ["Auto Mode", "Manual Mode"],
-        datasets: [{
-          data: [autoCount, manualCount],
-          backgroundColor: ["#4e73df", "#1cc88a"]
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: true
-      }
-    });
-  }
-
-  // ===== IRRIGATION BAR CHART =====
-  let irrigationOn = 0;
-  let irrigationOff = 0;
-
-  logs.forEach(log => {
-    if (typeof log !== "string") return;
-    if (log.includes("Irrigation Started")) irrigationOn++;
-    if (log.includes("Irrigation Stopped")) irrigationOff++;
-  });
-
-  if (irrigationOn === 0 && irrigationOff === 0) {
-    irrigationOn = 1;
-    irrigationOff = 1;
-  }
-
-  const irrigationCanvas = document.getElementById("irrigationChart");
-  if (irrigationCanvas) {
-    new Chart(irrigationCanvas, {
-      type: "bar",
-      data: {
-        labels: ["Irrigation ON", "Irrigation OFF"],
-        datasets: [{
-          label: "Actions",
-          data: [irrigationOn, irrigationOff],
-          backgroundColor: ["#1cc88a", "#e74a3b"]
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: { precision: 0 }
-          }
-        }
-      }
-    });
-  }
-
-});
-</script>
+    <div class="col-xl-5 col-lg-5">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">System Activity Mode</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-pie" style="height: 400px;">
+                    <canvas id="modeChart"></canvas>
+                </div>
+                <div class="mt-4 text-center small">
+                    <span class="mr-3"><i class="fas fa-circle text-primary"></i> Auto Mode</span>
+                    <span><i class="fas fa-circle text-success"></i> Manual Mode</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -549,6 +381,182 @@ function handleLogout() {
 }
 
 </script>
+
+<script src="vendor/chart.js/Chart.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  let logs = JSON.parse(localStorage.getItem("farmLogs")) || [];
+
+  let on = 0, off = 0, auto = 0, manual = 0;
+
+  logs.forEach(log => {
+    if (typeof log !== "string") return;
+    if (log.includes("Irrigation Started")) on++;
+    if (log.includes("Irrigation Stopped")) off++;
+    if (log.includes("Auto")) auto++;
+    if (log.includes("Manual")) manual++;
+  });
+
+  
+
+  new Chart(document.getElementById("modeChart"), {
+    type: "pie",
+    data: {
+      labels: ["Auto", "Manual"],
+      datasets: [{
+        data: [auto, manual],
+        backgroundColor: ["#4e73df", "#1cc88a"]
+      }]
+    }
+  });
+
+});
+
+// Set new default font family and font color to mimic Bootstrap's default styling
+Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+Chart.defaults.global.defaultFontColor = '#858796';
+
+var ctx = document.getElementById("myFarmBarChart");
+var myBarChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ["Corn", "Wheat", "Soybeans", "Barley", "Oats", "Rice"],
+    datasets: [{
+      label: "Yield (Tons)",
+      backgroundColor: "#4e73df",
+      hoverBackgroundColor: "#2e59d9",
+      borderColor: "#4e73df",
+      data: [4215, 5312, 6251, 7841, 9821, 14984], // Your farm data here
+    }],
+  },
+  options: {
+    maintainAspectRatio: false,
+    layout: {
+      padding: { left: 10, right: 25, top: 25, bottom: 0 }
+    },
+    scales: {
+      xAxes: [{
+        gridLines: { display: false, drawBorder: false },
+        ticks: { maxTicksLimit: 6 },
+        maxBarLength: 100
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          maxTicksLimit: 5,
+          padding: 10,
+          // Include a unit in the ticks
+          callback: function(value) { return value + ' t'; }
+        },
+        gridLines: {
+          color: "rgb(234, 236, 244)",
+          zeroLineColor: "rgb(234, 236, 244)",
+          drawBorder: false,
+          borderDash: [2],
+          zeroLineBorderDash: [2]
+        }
+      }],
+    },
+    legend: { display: false },
+    tooltips: {
+      titleMarginBottom: 10,
+      titleFontColor: '#6e707e',
+      titleFontSize: 14,
+      backgroundColor: "rgb(255,255,255)",
+      bodyFontColor: "#858796",
+      borderColor: '#dddfeb',
+      borderWidth: 1,
+      xPadding: 15,
+      yPadding: 15,
+      displayColors: false,
+      caretPadding: 10,
+      callbacks: {
+        label: function(tooltipItem, chart) {
+          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+          return datasetLabel + ': ' + tooltipItem.yLabel + ' Tons';
+        }
+      }
+    },
+  }
+});
+
+var ctx = document.getElementById("farmRainfallChart");
+var myLineChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    datasets: [{
+      label: "Rainfall",
+      lineTension: 0.3,
+      backgroundColor: "rgba(78, 115, 223, 0.05)",
+      borderColor: "rgba(78, 115, 223, 1)",
+      pointRadius: 3,
+      pointBackgroundColor: "rgba(78, 115, 223, 1)",
+      pointBorderColor: "rgba(78, 115, 223, 1)",
+      pointHoverRadius: 3,
+      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+      pointHitRadius: 10,
+      pointBorderWidth: 2,
+      data: [50, 40, 65, 80, 120, 150, 170, 160, 130, 90, 60, 55], // Monthly mm of rain
+    }],
+  },
+  options: {
+    maintainAspectRatio: false,
+    scales: {
+      xAxes: [{
+        gridLines: { display: false, drawBorder: false },
+        ticks: { maxTicksLimit: 7 }
+      }],
+      yAxes: [{
+        ticks: {
+          maxTicksLimit: 5,
+          padding: 10,
+          callback: function(value) { return value + ' mm'; }
+        },
+        gridLines: {
+          color: "rgb(234, 236, 244)",
+          zeroLineColor: "rgb(234, 236, 244)",
+          drawBorder: false,
+          borderDash: [2],
+          zeroLineBorderDash: [2]
+        }
+      }],
+    },
+    legend: { display: false },
+    tooltips: {
+      backgroundColor: "rgb(255,255,255)",
+      bodyFontColor: "#858796",
+      titleMarginBottom: 10,
+      titleFontColor: '#6e707e',
+      titleFontSize: 14,
+      borderColor: '#dddfeb',
+      borderWidth: 1,
+      xPadding: 15,
+      yPadding: 15,
+      displayColors: false,
+      intersect: false,
+      mode: 'index',
+      caretPadding: 10,
+      callbacks: {
+        label: function(tooltipItem, chart) {
+          return tooltipItem.yLabel + ' mm';
+        }
+      }
+    }
+  }
+});
+
+</script>
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>
+
+
 
 </body>
 
