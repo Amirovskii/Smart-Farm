@@ -273,7 +273,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">Farm Climate Trend: Monthly Rainfall & Irrigation</h6>
             </div>
             <div class="card-body">
-                <div class="chart-area" style="height: 450px;">
+                <div class="chart-area" style="height: 450px; position: relative;">
                     <canvas id="farmRainfallChart"></canvas>
                 </div>
             </div>
@@ -288,7 +288,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">Annual Crop Yield (Tons)</h6>
             </div>
             <div class="card-body">
-                <div class="chart-bar" style="height: 400px;">
+                <div class="chart-bar" style="height: 400px; position: relative;">
                     <canvas id="myFarmBarChart"></canvas>
                 </div>
             </div>
@@ -301,7 +301,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">System Activity Mode</h6>
             </div>
             <div class="card-body">
-                <div class="chart-pie" style="height: 400px;">
+                <div class="chart-pie" style="height: 400px; position: relative;">
                     <canvas id="modeChart"></canvas>
                 </div>
                 <div class="mt-4 text-center small">
@@ -313,250 +313,107 @@
     </div>
 </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const currentUserEmail = localStorage.getItem("currentUserEmail");
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const user = users.find(u => u.email === currentUserEmail);
-
-    if (user) {
-        // Look for the span that holds the name in the topbar
-        const nameDisplay = document.querySelector("#userDropdown .text-gray-600");
-        if (nameDisplay) {
-            nameDisplay.innerText = user.firstName + " " + user.lastName;
-        }
-    } else {
-        // If no one is logged in, send them back to login
-        window.location.href = "login.html";
-    }
-});
-</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    // 1. Get settings from LocalStorage
-    const settings = JSON.parse(localStorage.getItem("farmSettings")) || { unit: 'C', water: 20 };
-
-    // 2. Update Temperature Display based on Unit Setting
-    const tempValueElement = document.querySelector(".text-primary + .h5"); // Finds the 14°C div
-    let currentTemp = 14; // This would normally come from a sensor
-    
-    if (settings.unit === "F") {
-        let fahrenheit = (currentTemp * 9/5) + 32;
-        tempValueElement.innerText = fahrenheit.toFixed(1) + "°F";
-    }
-
-    // 3. Update Water Level Alert color
-    const waterLevel = 75; // The 75% from your HTML
-    const waterCard = document.querySelector(".border-left-success");
-    
-    if (waterLevel < settings.water) {
-        waterCard.classList.replace("border-left-success", "border-left-danger");
-        waterCard.querySelector(".text-success").classList.replace("text-success", "text-danger");
-    }
-});
-
-function handleLogout() {
-    let logs = JSON.parse(localStorage.getItem("activityLog")) || [];
-    
-    // 1. Get the actual user from storage, default to 'Unknown' if not found
-    const activeUser = localStorage.getItem("currentUser") || "Unknown User";
-
-    const logoutLog = {
-        user: activeUser, // Now it uses the variable!
-        action: "Logout",
-        timestamp: new Date().toLocaleString(),
-        status: "Success",
-        icon: "fa-sign-out-alt",
-        color: "text-warning"
-    };
-
-    logs.unshift(logoutLog);
-    localStorage.setItem("activityLog", JSON.stringify(logs));
-    
-    // 2. Clear the current user and redirect
-    localStorage.removeItem("currentUser");
-    localStorage.setItem("loggedIn", "false");
-    window.location.href = "login.html";
-}
-
-</script>
-
-<script src="vendor/chart.js/Chart.min.js"></script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  let logs = JSON.parse(localStorage.getItem("farmLogs")) || [];
-
-  let on = 0, off = 0, auto = 0, manual = 0;
-
-  logs.forEach(log => {
-    if (typeof log !== "string") return;
-    if (log.includes("Irrigation Started")) on++;
-    if (log.includes("Irrigation Stopped")) off++;
-    if (log.includes("Auto")) auto++;
-    if (log.includes("Manual")) manual++;
-  });
-
-  
-
-  new Chart(document.getElementById("modeChart"), {
-    type: "pie",
-    data: {
-      labels: ["Auto", "Manual"],
-      datasets: [{
-        data: [auto, manual],
-        backgroundColor: ["#4e73df", "#1cc88a"]
-      }]
-    }
-  });
-
-});
-
-// Set new default font family and font color to mimic Bootstrap's default styling
+// Global Chart Configuration
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
 
-var ctx = document.getElementById("myFarmBarChart");
-var myBarChart = new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: ["Corn", "Wheat", "Soybeans", "Barley", "Oats", "Rice"],
-    datasets: [{
-      label: "Yield (Tons)",
-      backgroundColor: "#4e73df",
-      hoverBackgroundColor: "#2e59d9",
-      borderColor: "#4e73df",
-      data: [4215, 5312, 6251, 7841, 9821, 14984], // Your farm data here
-    }],
-  },
-  options: {
-    maintainAspectRatio: false,
-    layout: {
-      padding: { left: 10, right: 25, top: 25, bottom: 0 }
-    },
-    scales: {
-      xAxes: [{
-        gridLines: { display: false, drawBorder: false },
-        ticks: { maxTicksLimit: 6 },
-        maxBarLength: 100
-      }],
-      yAxes: [{
-        ticks: {
-          min: 0,
-          maxTicksLimit: 5,
-          padding: 10,
-          // Include a unit in the ticks
-          callback: function(value) { return value + ' t'; }
-        },
-        gridLines: {
-          color: "rgb(234, 236, 244)",
-          zeroLineColor: "rgb(234, 236, 244)",
-          drawBorder: false,
-          borderDash: [2],
-          zeroLineBorderDash: [2]
-        }
-      }],
-    },
-    legend: { display: false },
-    tooltips: {
-      titleMarginBottom: 10,
-      titleFontColor: '#6e707e',
-      titleFontSize: 14,
-      backgroundColor: "rgb(255,255,255)",
-      bodyFontColor: "#858796",
-      borderColor: '#dddfeb',
-      borderWidth: 1,
-      xPadding: 15,
-      yPadding: 15,
-      displayColors: false,
-      caretPadding: 10,
-      callbacks: {
-        label: function(tooltipItem, chart) {
-          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-          return datasetLabel + ': ' + tooltipItem.yLabel + ' Tons';
-        }
-      }
-    },
-  }
-});
+document.addEventListener("DOMContentLoaded", function () {
 
-var ctx = document.getElementById("farmRainfallChart");
-var myLineChart = new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    datasets: [{
-      label: "Rainfall",
-      lineTension: 0.3,
-      backgroundColor: "rgba(78, 115, 223, 0.05)",
-      borderColor: "rgba(78, 115, 223, 1)",
-      pointRadius: 3,
-      pointBackgroundColor: "rgba(78, 115, 223, 1)",
-      pointBorderColor: "rgba(78, 115, 223, 1)",
-      pointHoverRadius: 3,
-      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-      pointHitRadius: 10,
-      pointBorderWidth: 2,
-      data: [50, 40, 65, 80, 120, 150, 170, 160, 130, 90, 60, 55], // Monthly mm of rain
-    }],
-  },
-  options: {
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        gridLines: { display: false, drawBorder: false },
-        ticks: { maxTicksLimit: 7 }
-      }],
-      yAxes: [{
-        ticks: {
-          maxTicksLimit: 5,
-          padding: 10,
-          callback: function(value) { return value + ' mm'; }
+    // --- 1. PIE CHART LOGIC (AUTO vs MANUAL) ---
+    let logs = JSON.parse(localStorage.getItem("farmLogs")) || [];
+    let auto = 0, manual = 0;
+
+    logs.forEach(log => {
+        if (typeof log !== "string") return;
+        if (log.includes("Auto")) auto++;
+        if (log.includes("Manual")) manual++;
+    });
+
+    // Fallback: If no data exists, show 50/50 so the chart isn't empty on GitHub
+    if (auto === 0 && manual === 0) { auto = 50; manual = 50; }
+
+    new Chart(document.getElementById("modeChart"), {
+        type: "pie",
+        data: {
+            labels: ["Auto", "Manual"],
+            datasets: [{
+                data: [auto, manual],
+                backgroundColor: ["#4e73df", "#1cc88a"],
+                hoverBackgroundColor: ["#2e59d9", "#17a673"],
+                borderWidth: 5,
+            }]
         },
-        gridLines: {
-          color: "rgb(234, 236, 244)",
-          zeroLineColor: "rgb(234, 236, 244)",
-          drawBorder: false,
-          borderDash: [2],
-          zeroLineBorderDash: [2]
+        options: {
+            maintainAspectRatio: false,
+            cutoutPercentage: 0, // Solid Pie fills more space
+            legend: { display: false },
+            layout: { padding: 10 }
         }
-      }],
-    },
-    legend: { display: false },
-    tooltips: {
-      backgroundColor: "rgb(255,255,255)",
-      bodyFontColor: "#858796",
-      titleMarginBottom: 10,
-      titleFontColor: '#6e707e',
-      titleFontSize: 14,
-      borderColor: '#dddfeb',
-      borderWidth: 1,
-      xPadding: 15,
-      yPadding: 15,
-      displayColors: false,
-      intersect: false,
-      mode: 'index',
-      caretPadding: 10,
-      callbacks: {
-        label: function(tooltipItem, chart) {
-          return tooltipItem.yLabel + ' mm';
+    });
+
+    // --- 2. BAR CHART LOGIC (CROP YIELD) ---
+    new Chart(document.getElementById("myFarmBarChart"), {
+        type: 'bar',
+        data: {
+            labels: ["Corn", "Wheat", "Soybeans", "Barley", "Oats", "Rice"],
+            datasets: [{
+                label: "Yield (Tons)",
+                backgroundColor: "#4e73df",
+                hoverBackgroundColor: "#2e59d9",
+                data: [4215, 5312, 6251, 7841, 9821, 14984],
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            scales: {
+                xAxes: [{ gridLines: { display: false }, ticks: { maxTicksLimit: 6 } }],
+                yAxes: [{ ticks: { beginAtZero: true, callback: value => value + ' t' } }]
+            },
+            legend: { display: false }
         }
-      }
-    }
-  }
+    });
+
+    // --- 3. LINE CHART LOGIC (RAINFALL) ---
+    new Chart(document.getElementById("farmRainfallChart"), {
+        type: 'line',
+        data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            datasets: [{
+                label: "Rainfall",
+                lineTension: 0.3,
+                backgroundColor: "rgba(78, 115, 223, 0.05)",
+                borderColor: "rgba(78, 115, 223, 1)",
+                pointRadius: 3,
+                data: [50, 40, 65, 80, 120, 150, 170, 160, 130, 90, 60, 55],
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            scales: {
+                xAxes: [{ gridLines: { display: false } }],
+                yAxes: [{ ticks: { callback: value => value + ' mm' } }]
+            },
+            legend: { display: false }
+        }
+    });
 });
 
 </script>
-
 <script src="vendor/jquery/jquery.min.js"></script>
+
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
 <script src="js/sb-admin-2.min.js"></script>
 
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+<script>
+    // Your chart code here...
+</script>
 
 </body>
 
