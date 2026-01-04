@@ -415,6 +415,76 @@ document.addEventListener("DOMContentLoaded", function () {
     // Your chart code here...
 </script>
 
+ <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const currentUserEmail = localStorage.getItem("currentUserEmail");
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const user = users.find(u => u.email === currentUserEmail);
+
+    if (user) {
+        // Look for the span that holds the name in the topbar
+        const nameDisplay = document.querySelector("#userDropdown .text-gray-600");
+        if (nameDisplay) {
+            nameDisplay.innerText = user.firstName + " " + user.lastName;
+        }
+    } else {
+        // If no one is logged in, send them back to login
+        window.location.href = "login.html";
+    }
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // 1. Get settings from LocalStorage
+    const settings = JSON.parse(localStorage.getItem("farmSettings")) || { unit: 'C', water: 20 };
+
+    // 2. Update Temperature Display based on Unit Setting
+    const tempValueElement = document.querySelector(".text-primary + .h5"); // Finds the 14°C div
+    let currentTemp = 14; // This would normally come from a sensor
+    
+    if (settings.unit === "F") {
+        let fahrenheit = (currentTemp * 9/5) + 32;
+        tempValueElement.innerText = fahrenheit.toFixed(1) + "°F";
+    }
+
+    // 3. Update Water Level Alert color
+    const waterLevel = 75; // The 75% from your HTML
+    const waterCard = document.querySelector(".border-left-success");
+    
+    if (waterLevel < settings.water) {
+        waterCard.classList.replace("border-left-success", "border-left-danger");
+        waterCard.querySelector(".text-success").classList.replace("text-success", "text-danger");
+    }
+});
+
+function handleLogout() {
+    let logs = JSON.parse(localStorage.getItem("activityLog")) || [];
+    
+    // 1. Get the actual user from storage, default to 'Unknown' if not found
+    const activeUser = localStorage.getItem("currentUser") || "Unknown User";
+
+    const logoutLog = {
+        user: activeUser, // Now it uses the variable!
+        action: "Logout",
+        timestamp: new Date().toLocaleString(),
+        status: "Success",
+        icon: "fa-sign-out-alt",
+        color: "text-warning"
+    };
+
+    logs.unshift(logoutLog);
+    localStorage.setItem("activityLog", JSON.stringify(logs));
+    
+    // 2. Clear the current user and redirect
+    localStorage.removeItem("currentUser");
+    localStorage.setItem("loggedIn", "false");
+    window.location.href = "login.html";
+}
+
+</script>
+
+
 </body>
 
 </html>
